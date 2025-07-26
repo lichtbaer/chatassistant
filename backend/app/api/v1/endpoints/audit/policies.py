@@ -38,22 +38,21 @@ async def get_audit_policies(
     """Get audit policies with pagination."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.get_audit_policies(
+        return await audit_service.get_audit_policies(
             db=db,
             page=page,
             size=size,
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error retrieving audit policies: {e}")
+        logger.exception(f"Error retrieving audit policies: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving audit policies: {e}")
+        logger.exception(f"Unexpected error retrieving audit policies: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -73,21 +72,20 @@ async def create_audit_policy(
     """Create a new audit policy."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.create_audit_policy(
+        return await audit_service.create_audit_policy(
             db=db,
             policy_data=policy_data,
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error creating audit policy: {e}")
+        logger.exception(f"Error creating audit policy: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error creating audit policy: {e}")
+        logger.exception(f"Unexpected error creating audit policy: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -119,13 +117,13 @@ async def get_audit_policy(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error retrieving audit policy {policy_id}: {e}")
+        logger.exception(f"Error retrieving audit policy {policy_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving audit policy {policy_id}: {e}")
+        logger.exception(f"Unexpected error retrieving audit policy {policy_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -159,13 +157,13 @@ async def update_audit_policy(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error updating audit policy {policy_id}: {e}")
+        logger.exception(f"Error updating audit policy {policy_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error updating audit policy {policy_id}: {e}")
+        logger.exception(f"Unexpected error updating audit policy {policy_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -195,13 +193,13 @@ async def delete_audit_policy(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error deleting audit policy {policy_id}: {e}")
+        logger.exception(f"Error deleting audit policy {policy_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error deleting audit policy {policy_id}: {e}")
+        logger.exception(f"Unexpected error deleting audit policy {policy_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",

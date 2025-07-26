@@ -43,7 +43,9 @@ def db_migrate():
     try:
         alembic_path = shutil.which("alembic")
         if not alembic_path:
-            print_error("Alembic not found in PATH. Please install alembic or run in a virtual environment with backend dependencies.")
+            print_error(
+                "Alembic not found in PATH. Please install alembic or run in a virtual environment with backend dependencies."
+            )
             sys.exit(1)
 
         result = subprocess.run(
@@ -68,7 +70,9 @@ def db_status():
     try:
         alembic_path = shutil.which("alembic")
         if not alembic_path:
-            print_error("Alembic not found in PATH. Please install alembic or run in a virtual environment with backend dependencies.")
+            print_error(
+                "Alembic not found in PATH. Please install alembic or run in a virtual environment with backend dependencies."
+            )
             sys.exit(1)
 
         result = subprocess.run(
@@ -93,7 +97,9 @@ def db_downgrade(revision):
     try:
         alembic_path = shutil.which("alembic")
         if not alembic_path:
-            print_error("Alembic not found in PATH. Please install alembic or run in a virtual environment with backend dependencies.")
+            print_error(
+                "Alembic not found in PATH. Please install alembic or run in a virtual environment with backend dependencies."
+            )
             sys.exit(1)
 
         result = subprocess.run(
@@ -140,7 +146,9 @@ def backup_create(output=None):
 
             pg_dump_path = shutil.which("pg_dump")
             if not pg_dump_path:
-                print_error("pg_dump not found in PATH. Please install PostgreSQL client tools.")
+                print_error(
+                    "pg_dump not found in PATH. Please install PostgreSQL client tools."
+                )
                 sys.exit(1)
 
             result = subprocess.run(
@@ -213,7 +221,9 @@ def backup_restore(backup_file, confirm=False):
 
             psql_path = shutil.which("psql")
             if not psql_path:
-                print_error("psql not found in PATH. Please install PostgreSQL client tools.")
+                print_error(
+                    "psql not found in PATH. Please install PostgreSQL client tools."
+                )
                 sys.exit(1)
 
             result = subprocess.run(
@@ -292,13 +302,13 @@ def monitoring_health():
         backend_url = os.getenv("BACKEND_URL", "http://localhost:8000")
         response = requests.get(f"{backend_url}/health", timeout=5)
         if response.status_code == 200:
-            pass
+            print_success("Backend health check passed")
         else:
-            pass
+            print_error(f"Backend health check failed: {response.status_code}")
     except ImportError:
-        pass
-    except Exception:
-        pass
+        print_error("requests module not available")
+    except Exception as e:
+        print_error(f"Health check error: {e}")
 
     # Check database connection
     try:
@@ -310,13 +320,13 @@ def monitoring_health():
             text=True,
         )
         if result.returncode == 0:
-            pass
+            print_success("Database connection check passed")
         else:
-            pass
+            print_error(f"Database connection check failed: {result.stderr}")
     except FileNotFoundError:
-        pass
-    except Exception:
-        pass
+        print_error("alembic command not found")
+    except Exception as e:
+        print_error(f"Database check error: {e}")
 
 
 def config_show():
@@ -342,8 +352,8 @@ def config_validate():
 
     if errors:
         print_error("Configuration validation failed:")
-        for _error in errors:
-            pass
+        for error in errors:
+            print_error(f"  - {error}")
         sys.exit(1)
     else:
         print_success("Configuration is valid")
@@ -360,27 +370,27 @@ def dev_quality_check():
         text=True,
     )
     if result.returncode == 0:
-        pass
+        print_success("Code formatting check passed")
     else:
-        pass
+        print_error(f"Code formatting check failed: {result.stderr}")
 
     # Linting
     result = subprocess.run(
         ["ruff", "check", "."], check=False, capture_output=True, text=True
     )
     if result.returncode == 0:
-        pass
+        print_success("Code linting check passed")
     else:
-        pass
+        print_error(f"Code linting check failed: {result.stderr}")
 
     # Security check
     result = subprocess.run(
         ["bandit", "-r", "."], check=False, capture_output=True, text=True
     )
     if result.returncode == 0:
-        pass
+        print_success("Security check passed")
     else:
-        pass
+        print_error(f"Security check failed: {result.stderr}")
 
 
 def dev_api_test(url="http://localhost:8000"):

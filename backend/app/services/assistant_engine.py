@@ -122,7 +122,9 @@ class AssistantEngine:
             Processing result with structured response
         """
         # Create processing request
-        request_id = f"req_{len(self.processing_requests)}_{datetime.now(UTC).timestamp()}"
+        request_id = (
+            f"req_{len(self.processing_requests)}_{datetime.now(UTC).timestamp()}"
+        )
 
         request = ProcessingRequest(
             request_id=request_id,

@@ -628,9 +628,7 @@ class ConversationIntelligenceService:
                 category=(
                     TopicCategory.TECHNICAL
                     if i == 0
-                    else TopicCategory.BUSINESS
-                    if i == 1
-                    else TopicCategory.GENERAL
+                    else TopicCategory.BUSINESS if i == 1 else TopicCategory.GENERAL
                 ),
                 confidence=0.8 - i * 0.1,
                 keywords=[f"keyword_{i}_{j}" for j in range(3)],
@@ -839,7 +837,11 @@ class ConversationIntelligenceService:
         """Identify periods of low activity."""
         # Simulated lull period identification
         return [
-            {"start": datetime.now(UTC), "end": datetime.now(UTC), "duration_minutes": 5.0},
+            {
+                "start": datetime.now(UTC),
+                "end": datetime.now(UTC),
+                "duration_minutes": 5.0,
+            },
         ]
 
     def _validate_intelligence_request(
@@ -875,7 +877,9 @@ class ConversationIntelligenceService:
             "min_topic_confidence": request.min_topic_confidence,
         }
 
-        return hashlib.md5(json.dumps(key_data, sort_keys=True).encode()).hexdigest()
+        return hashlib.md5(
+            json.dumps(key_data, sort_keys=True).encode(), usedforsecurity=False
+        ).hexdigest()
 
     async def _get_cached_result(
         self,

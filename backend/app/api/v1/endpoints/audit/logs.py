@@ -90,7 +90,7 @@ async def get_audit_logs(
             "end_date": end_date,
         }
 
-        result = await audit_service.get_audit_logs(
+        return await audit_service.get_audit_logs(
             db=db,
             filters=filters,
             page=page,
@@ -100,15 +100,14 @@ async def get_audit_logs(
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error retrieving audit logs: {e}")
+        logger.exception(f"Error retrieving audit logs: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving audit logs: {e}")
+        logger.exception(f"Unexpected error retrieving audit logs: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -140,13 +139,13 @@ async def get_audit_log(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error retrieving audit log {log_id}: {e}")
+        logger.exception(f"Error retrieving audit log {log_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving audit log {log_id}: {e}")
+        logger.exception(f"Unexpected error retrieving audit log {log_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -180,13 +179,13 @@ async def update_audit_log(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error updating audit log {log_id}: {e}")
+        logger.exception(f"Error updating audit log {log_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error updating audit log {log_id}: {e}")
+        logger.exception(f"Unexpected error updating audit log {log_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -210,7 +209,7 @@ async def get_audit_statistics(
     """Get audit statistics overview."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.get_audit_statistics(
+        return await audit_service.get_audit_statistics(
             db=db,
             start_date=start_date,
             end_date=end_date,
@@ -218,15 +217,14 @@ async def get_audit_statistics(
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error retrieving audit statistics: {e}")
+        logger.exception(f"Error retrieving audit statistics: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving audit statistics: {e}")
+        logger.exception(f"Unexpected error retrieving audit statistics: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -242,21 +240,20 @@ async def export_audit_logs(
     """Export audit logs based on specified parameters."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.export_audit_logs(
+        return await audit_service.export_audit_logs(
             db=db,
             export_params=export_params,
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error exporting audit logs: {e}")
+        logger.exception(f"Error exporting audit logs: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error exporting audit logs: {e}")
+        logger.exception(f"Unexpected error exporting audit logs: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",

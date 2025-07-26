@@ -38,22 +38,21 @@ async def get_retention_rules(
     """Get retention rules with pagination."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.get_retention_rules(
+        return await audit_service.get_retention_rules(
             db=db,
             page=page,
             size=size,
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error retrieving retention rules: {e}")
+        logger.exception(f"Error retrieving retention rules: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving retention rules: {e}")
+        logger.exception(f"Unexpected error retrieving retention rules: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -73,21 +72,20 @@ async def create_retention_rule(
     """Create a new retention rule."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.create_retention_rule(
+        return await audit_service.create_retention_rule(
             db=db,
             rule_data=rule_data,
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error creating retention rule: {e}")
+        logger.exception(f"Error creating retention rule: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error creating retention rule: {e}")
+        logger.exception(f"Unexpected error creating retention rule: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -119,13 +117,13 @@ async def get_retention_rule(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error retrieving retention rule {rule_id}: {e}")
+        logger.exception(f"Error retrieving retention rule {rule_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving retention rule {rule_id}: {e}")
+        logger.exception(f"Unexpected error retrieving retention rule {rule_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -159,13 +157,13 @@ async def update_retention_rule(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error updating retention rule {rule_id}: {e}")
+        logger.exception(f"Error updating retention rule {rule_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error updating retention rule {rule_id}: {e}")
+        logger.exception(f"Unexpected error updating retention rule {rule_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -195,13 +193,13 @@ async def delete_retention_rule(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error deleting retention rule {rule_id}: {e}")
+        logger.exception(f"Error deleting retention rule {rule_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error deleting retention rule {rule_id}: {e}")
+        logger.exception(f"Unexpected error deleting retention rule {rule_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",

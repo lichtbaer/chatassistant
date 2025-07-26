@@ -21,7 +21,7 @@ class PDFProcessor:
                 text_content = ""
                 page_count = len(pdf_reader.pages)
 
-                for page_num, page in enumerate(pdf_reader.pages):
+                for _page_num, page in enumerate(pdf_reader.pages):
                     text_content += page.extract_text() + "\n"
 
                 return {

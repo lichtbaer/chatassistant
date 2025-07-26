@@ -9,7 +9,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from ...models.audit import AuditLog
+from backend.app.models.audit import AuditLog
 
 
 class AuditLogger:

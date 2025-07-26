@@ -46,7 +46,7 @@ async def get_compliance_reports(
     """Get compliance reports with filtering and pagination."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.get_compliance_reports(
+        return await audit_service.get_compliance_reports(
             db=db,
             framework=framework,
             status=status,
@@ -55,15 +55,14 @@ async def get_compliance_reports(
             current_user=current_user,
         )
 
-        return result
     except (AuditError, ComplianceError) as e:
-        logger.error(f"Error retrieving compliance reports: {e}")
+        logger.exception(f"Error retrieving compliance reports: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving compliance reports: {e}")
+        logger.exception(f"Unexpected error retrieving compliance reports: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -83,21 +82,20 @@ async def create_compliance_report(
     """Create a new compliance report."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.create_compliance_report(
+        return await audit_service.create_compliance_report(
             db=db,
             report_data=report_data,
             current_user=current_user,
         )
 
-        return result
     except (AuditError, ComplianceError) as e:
-        logger.error(f"Error creating compliance report: {e}")
+        logger.exception(f"Error creating compliance report: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error creating compliance report: {e}")
+        logger.exception(f"Unexpected error creating compliance report: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -113,21 +111,20 @@ async def generate_compliance_report(
     """Generate a compliance report based on parameters."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.generate_compliance_report(
+        return await audit_service.generate_compliance_report(
             db=db,
             report_params=report_params,
             current_user=current_user,
         )
 
-        return result
     except (AuditError, ComplianceError) as e:
-        logger.error(f"Error generating compliance report: {e}")
+        logger.exception(f"Error generating compliance report: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error generating compliance report: {e}")
+        logger.exception(f"Unexpected error generating compliance report: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -159,13 +156,15 @@ async def get_compliance_report(
     except HTTPException:
         raise
     except (AuditError, ComplianceError) as e:
-        logger.error(f"Error retrieving compliance report {report_id}: {e}")
+        logger.exception(f"Error retrieving compliance report {report_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving compliance report {report_id}: {e}")
+        logger.exception(
+            f"Unexpected error retrieving compliance report {report_id}: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -199,13 +198,15 @@ async def update_compliance_report(
     except HTTPException:
         raise
     except (AuditError, ComplianceError) as e:
-        logger.error(f"Error updating compliance report {report_id}: {e}")
+        logger.exception(f"Error updating compliance report {report_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error updating compliance report {report_id}: {e}")
+        logger.exception(
+            f"Unexpected error updating compliance report {report_id}: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -238,13 +239,15 @@ async def delete_compliance_report(
     except HTTPException:
         raise
     except (AuditError, ComplianceError) as e:
-        logger.error(f"Error deleting compliance report {report_id}: {e}")
+        logger.exception(f"Error deleting compliance report {report_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error deleting compliance report {report_id}: {e}")
+        logger.exception(
+            f"Unexpected error deleting compliance report {report_id}: {e}"
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",

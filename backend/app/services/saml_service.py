@@ -185,8 +185,14 @@ class SAMLService:
 
         except Exception as e:
             logger.error(f"Failed to create temporary certificates: {e}")
-            # Return dummy files
-            return "/tmp/dummy.crt", "/tmp/dummy.key"
+            # Return dummy files in temp directory
+            import tempfile
+
+            temp_dir = tempfile.gettempdir()
+            return (
+                f"{temp_dir}/dummy.crt",
+                f"{temp_dir}/dummy.key",
+            )  # nosec B108 - using tempfile.gettempdir()
 
     def is_enabled(self) -> bool:
         """Check if SAML is enabled and configured."""

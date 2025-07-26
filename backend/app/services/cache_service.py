@@ -220,12 +220,23 @@ class CacheService:
         """Deserialize data from storage."""
         try:
             if self.config.enable_compression:
-                # Try pickle first
-                return pickle.loads(data)
+                # Try pickle first (safe for internal cache data)
+                try:
+                    return pickle.loads(data)
+                except (
+                    pickle.UnpicklingError,
+                    AttributeError,
+                    EOFError,
+                    ImportError,
+                    IndexError,
+                ):
+                    # Fallback to JSON if pickle fails
+                    return json.loads(data.decode("utf-8"))
             # Try JSON first, fallback to pickle
             try:
                 return json.loads(data.decode("utf-8"))
             except (json.JSONDecodeError, UnicodeDecodeError):
+                # Fallback to pickle (safe for internal cache data)
                 return pickle.loads(data)
         except Exception as e:
             logger.error(f"Failed to deserialize data: {e}")
@@ -531,7 +542,7 @@ class AIResponseCache:
         import hashlib
 
         content = f"{message}:{context or ''}"
-        return hashlib.md5(content.encode()).hexdigest()
+        return hashlib.md5(content.encode(), usedforsecurity=False).hexdigest()
 
     async def get_response(
         self,
@@ -582,7 +593,7 @@ class ToolResultCache:
         import hashlib
 
         args_str = json.dumps(arguments, sort_keys=True)
-        return hashlib.md5(args_str.encode()).hexdigest()
+        return hashlib.md5(args_str.encode(), usedforsecurity=False).hexdigest()
 
     async def get_result(
         self,

@@ -8,7 +8,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from ...models.audit_extended import AuditPolicy
+from backend.app.models.audit_extended import AuditPolicy
 
 
 class AuditPolicyManager:
@@ -34,7 +34,7 @@ class AuditPolicyManager:
         """Get audit policies."""
         query = self.db.query(AuditPolicy)
         if active_only:
-            query = query.filter(AuditPolicy.is_active == True)
+            query = query.filter(AuditPolicy.is_active)
         return query.all()
 
     def update_policy(self, policy_id: int, updates: dict[str, Any]) -> bool:

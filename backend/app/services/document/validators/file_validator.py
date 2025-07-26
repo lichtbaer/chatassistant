@@ -37,7 +37,4 @@ class FileValidator:
             return False
 
         mime_type = magic.from_file(file_path, mime=True)
-        if mime_type not in self.SUPPORTED_TYPES:
-            return False
-
-        return True
+        return mime_type in self.SUPPORTED_TYPES

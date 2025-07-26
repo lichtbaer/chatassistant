@@ -330,7 +330,7 @@ class EmbeddingService:
         """Generate cache key for text and model."""
         import hashlib
 
-        text_hash = hashlib.md5(text.encode()).hexdigest()
+        text_hash = hashlib.md5(text.encode(), usedforsecurity=False).hexdigest()
         return f"{model}:{text_hash}"
 
     def _cache_embedding(self, cache_key: str, embedding: list[float]):

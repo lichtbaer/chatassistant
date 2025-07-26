@@ -285,19 +285,27 @@ class AIService:
                             {
                                 "index": choice.index,
                                 "delta": {
-                                    "content": choice.delta.content
-                                    if hasattr(choice.delta, "content")
-                                    else None,
-                                    "role": choice.delta.role
-                                    if hasattr(choice.delta, "role")
-                                    else None,
-                                    "tool_calls": choice.delta.tool_calls
-                                    if hasattr(choice.delta, "tool_calls")
-                                    else None,
+                                    "content": (
+                                        choice.delta.content
+                                        if hasattr(choice.delta, "content")
+                                        else None
+                                    ),
+                                    "role": (
+                                        choice.delta.role
+                                        if hasattr(choice.delta, "role")
+                                        else None
+                                    ),
+                                    "tool_calls": (
+                                        choice.delta.tool_calls
+                                        if hasattr(choice.delta, "tool_calls")
+                                        else None
+                                    ),
                                 },
-                                "finish_reason": choice.finish_reason
-                                if hasattr(choice, "finish_reason")
-                                else None,
+                                "finish_reason": (
+                                    choice.finish_reason
+                                    if hasattr(choice, "finish_reason")
+                                    else None
+                                ),
                             }
                         ],
                         "usage": chunk.usage if hasattr(chunk, "usage") else None,

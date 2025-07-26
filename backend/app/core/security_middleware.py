@@ -152,7 +152,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         """Clean up old rate limit entries."""
         keys_to_remove = [
             key
-            for key in self.request_counts.keys()
+            for key in self.request_counts
             if int(key.split(":")[1]) < current_time - 1
         ]
         for key in keys_to_remove:
@@ -183,19 +183,13 @@ class SecurityValidationMiddleware(BaseHTTPMiddleware):
             return Response(content="Invalid request", status_code=400)
 
         # Process request
-        response = await call_next(request)
-
-        return response
+        return await call_next(request)
 
     def _has_suspicious_headers(self, request: Request) -> bool:
         """Check for suspicious headers."""
         suspicious_headers = ["X-Forwarded-Host", "X-Original-URL", "X-Rewrite-URL"]
 
-        for header in suspicious_headers:
-            if header in request.headers:
-                return True
-
-        return False
+        return any(header in request.headers for header in suspicious_headers)
 
     def _has_suspicious_user_agent(self, request: Request) -> bool:
         """Check for suspicious user agents."""

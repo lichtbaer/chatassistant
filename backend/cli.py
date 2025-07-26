@@ -43,17 +43,14 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def print_success(message):
     """Print success message."""
-    print(f"✅ {message}")
 
 
 def print_error(message):
     """Print error message."""
-    print(f"❌ {message}")
 
 
 def print_info(message):
     """Print info message."""
-    print(f"ℹ️  {message}")
 
 
 def db_migrate():

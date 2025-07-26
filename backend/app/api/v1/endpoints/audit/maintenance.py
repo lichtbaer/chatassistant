@@ -42,13 +42,13 @@ async def cleanup_expired_logs(
             "status": "success",
         }
     except AuditError as e:
-        logger.error(f"Error during audit cleanup: {e}")
+        logger.exception(f"Error during audit cleanup: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error during audit cleanup: {e}")
+        logger.exception(f"Unexpected error during audit cleanup: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -74,14 +74,14 @@ async def audit_health_check(
             "details": result,
         }
     except AuditError as e:
-        logger.error(f"Audit health check failed: {e}")
+        logger.exception(f"Audit health check failed: {e}")
         return {
             "status": "unhealthy",
             "error": str(e),
             "timestamp": result.get("timestamp") if "result" in locals() else None,
         }
     except Exception as e:
-        logger.error(f"Unexpected error during audit health check: {e}")
+        logger.exception(f"Unexpected error during audit health check: {e}")
         return {
             "status": "error",
             "error": "Internal server error",

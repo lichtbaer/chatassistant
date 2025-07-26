@@ -39,9 +39,8 @@ class ComplianceChecker:
                 return False
 
         # Check user restrictions
-        if "restricted_users" in rules:
-            if user_id in rules["restricted_users"]:
-                return False
+        if "restricted_users" in rules and user_id in rules["restricted_users"]:
+            return False
 
         # Check time restrictions
         if "time_restrictions" in rules:

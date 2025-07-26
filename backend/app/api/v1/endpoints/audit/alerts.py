@@ -38,22 +38,21 @@ async def get_audit_alerts(
     """Get audit alerts with pagination."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.get_audit_alerts(
+        return await audit_service.get_audit_alerts(
             db=db,
             page=page,
             size=size,
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error retrieving audit alerts: {e}")
+        logger.exception(f"Error retrieving audit alerts: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving audit alerts: {e}")
+        logger.exception(f"Unexpected error retrieving audit alerts: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -73,21 +72,20 @@ async def create_audit_alert(
     """Create a new audit alert."""
     try:
         audit_service = get_audit_service()
-        result = await audit_service.create_audit_alert(
+        return await audit_service.create_audit_alert(
             db=db,
             alert_data=alert_data,
             current_user=current_user,
         )
 
-        return result
     except AuditError as e:
-        logger.error(f"Error creating audit alert: {e}")
+        logger.exception(f"Error creating audit alert: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error creating audit alert: {e}")
+        logger.exception(f"Unexpected error creating audit alert: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -119,13 +117,13 @@ async def get_audit_alert(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error retrieving audit alert {alert_id}: {e}")
+        logger.exception(f"Error retrieving audit alert {alert_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error retrieving audit alert {alert_id}: {e}")
+        logger.exception(f"Unexpected error retrieving audit alert {alert_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -159,13 +157,13 @@ async def update_audit_alert(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error updating audit alert {alert_id}: {e}")
+        logger.exception(f"Error updating audit alert {alert_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error updating audit alert {alert_id}: {e}")
+        logger.exception(f"Unexpected error updating audit alert {alert_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",
@@ -195,13 +193,13 @@ async def delete_audit_alert(
     except HTTPException:
         raise
     except AuditError as e:
-        logger.error(f"Error deleting audit alert {alert_id}: {e}")
+        logger.exception(f"Error deleting audit alert {alert_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )
     except Exception as e:
-        logger.error(f"Unexpected error deleting audit alert {alert_id}: {e}")
+        logger.exception(f"Unexpected error deleting audit alert {alert_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error",

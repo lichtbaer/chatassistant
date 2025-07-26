@@ -9,7 +9,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from ...models.audit_extended import AuditAlert
+from backend.app.models.audit_extended import AuditAlert
 
 
 class AlertManager:
@@ -67,7 +67,7 @@ class AlertManager:
         """Get a summary of alerts."""
         total_alerts = self.db.query(AuditAlert).count()
         unresolved_alerts = (
-            self.db.query(AuditAlert).filter(AuditAlert.is_resolved == False).count()
+            self.db.query(AuditAlert).filter(not AuditAlert.is_resolved).count()
         )
 
         severity_counts = {}

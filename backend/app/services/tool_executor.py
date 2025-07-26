@@ -429,9 +429,9 @@ class ToolExecutor:
             }
 
             if param.enum:
-                schema["function"]["parameters"]["properties"][param.name]["enum"] = (
-                    param.enum
-                )
+                schema["function"]["parameters"]["properties"][param.name][
+                    "enum"
+                ] = param.enum
 
             if param.min_value is not None:
                 schema["function"]["parameters"]["properties"][param.name][

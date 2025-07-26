@@ -22,7 +22,9 @@ class Settings(BaseSettings):
     environment: str = Field(default="production", description="Environment")
 
     # Server
-    host: str = Field(default="0.0.0.0", description="Host")
+    host: str = Field(
+        default="0.0.0.0", description="Host"
+    )  # nosec B104 - 0.0.0.0 is correct for server binding
     port: int = Field(default=8000, description="Port")
     frontend_port: int = Field(default=3000, description="Frontend port")
 

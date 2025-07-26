@@ -362,7 +362,7 @@ class EnhancedAIService:
         }
 
         key_string = json.dumps(key_data, sort_keys=True)
-        return hashlib.md5(key_string.encode()).hexdigest()
+        return hashlib.md5(key_string.encode(), usedforsecurity=False).hexdigest()
 
     def _map_priority(self, priority: str) -> str:
         """Map string priority to TaskPriority enum."""

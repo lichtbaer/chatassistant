@@ -559,9 +559,13 @@ class RAGService:
         key_data = {
             "query": request.query,
             "conversation_id": request.conversation_id,
-            "config_hash": hashlib.md5(config.json().encode()).hexdigest()[:8],
+            "config_hash": hashlib.md5(
+                config.json().encode(), usedforsecurity=False
+            ).hexdigest()[:8],
         }
-        return hashlib.md5(json.dumps(key_data, sort_keys=True).encode()).hexdigest()
+        return hashlib.md5(
+            json.dumps(key_data, sort_keys=True).encode(), usedforsecurity=False
+        ).hexdigest()
 
     async def _get_cached_result(self, cache_key: str) -> RAGResponse | None:
         """Get cached RAG result."""

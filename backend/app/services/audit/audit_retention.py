@@ -9,8 +9,8 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from ...models.audit_extended import AuditRetentionRule as AuditRetentionPolicy
-from ...models.audit_extended import ExtendedAuditLog as AuditLog
+from backend.app.models.audit_extended import AuditRetentionRule as AuditRetentionPolicy
+from backend.app.models.audit_extended import ExtendedAuditLog as AuditLog
 
 
 class RetentionManager:
@@ -41,7 +41,7 @@ class RetentionManager:
         """Apply all active retention policies."""
         policies = (
             self.db.query(AuditRetentionPolicy)
-            .filter(AuditRetentionPolicy.is_active == True)
+            .filter(AuditRetentionPolicy.is_active)
             .all()
         )
         total_deleted = 0
